@@ -4,13 +4,22 @@
 
 
 <template>
-    <base-card>
-        <base-button @click="setSelectedTab('stored-resources')" :mode="storedResButtonMode">Stored Resources</base-button>
-        <base-button @click="setSelectedTab('add-resource')" :mode="addResButtonMode">Add Resource</base-button>
-    </base-card>
+  <base-card>
+    <base-button
+      @click="setSelectedTab('stored-resources')"
+      :mode="storedResButtonMode"
+      >Stored Resources</base-button
+    >
+    <base-button
+      @click="setSelectedTab('add-resource')"
+      :mode="addResButtonMode"
+      >Add Resource</base-button
+    >
+  </base-card>
 
-    <!-- dynamic compo tell which component to be rendered upon clicking the above buttons -->
+  <keep-alive>
     <component :is="selectedTab"></component>
+  </keep-alive>
 </template>
 
 
@@ -19,46 +28,54 @@ import StoredResources from './StoredResources.vue';
 import AddResource from './AddResource.vue';
 
 export default {
-    components : {StoredResources,
-        AddResource},
-    data(){
-        return{
-            selectedTab : 'stored-resources',
-            storedResources: [
-                {
-                    id: 'official-guide',
-                    title: 'Official Guide',
-                    description: 'The official guide of VueJs',
-                    link: 'https://vuejs.org',
-                },
-                {
-                    id: 'official-guide',
-                    title: 'Official Guide',
-                    description: 'Google site',
-                    link: 'https://google.co.in',
-                },
-            ],
-        }
-    },
-    provide(){
-        return {
-            resources : this.storedResources
-        }
-    },
-    computed: {
-        storedResButtonMode(){
-            return this.selectedTab === 'stored-resources' ? null : 'flat'
+  components: { StoredResources, AddResource },
+  data() {
+    return {
+      selectedTab: 'stored-resources',
+      storedResources: [
+        {
+          id: 'official-guide',
+          title: 'Official Guide',
+          description: 'The official guide of VueJs',
+          link: 'https://vuejs.org',
         },
-        addResButtonMode(){
-            return this.selectedTab === 'add-resource' ? null : 'flat'
-  
-        }
+        {
+          id: 'official-guide',
+          title: 'Official Guide',
+          description: 'Google site',
+          link: 'https://google.co.in',
+        },
+      ],
+    };
+  },
+  provide() {
+    return {
+      resources: this.storedResources,
+      addResource: this.addResource,
+    };
+  },
+  computed: {
+    storedResButtonMode() {
+      return this.selectedTab === 'stored-resources' ? null : 'flat';
     },
-    methods : {
-        setSelectedTab(tab){
-            this.selectedTab = tab;
-        }
-    }
-
-}
+    addResButtonMode() {
+      return this.selectedTab === 'add-resource' ? null : 'flat';
+    },
+  },
+  methods: {
+    setSelectedTab(tab) {
+      this.selectedTab = tab;
+    },
+    addResource(title, description, url) {
+      const newResource = {
+        id: new Date().toISOString(),
+        title: title,
+        description: description,
+        link: url,
+      };
+      console.log(newResource);
+      this.storedResources.unshift(newResource);
+    },
+  },
+};
 </script>
