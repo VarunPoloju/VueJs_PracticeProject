@@ -1,3 +1,6 @@
+<!-- we have 2 buttons clicking on it switches b/w STORED Resources and Add REsources components
+ -->
+
 <template>
     <ul>
         <learning-resource v-for="res in resources" :key="res.id" :title="res.title" :description="res.description"
@@ -15,7 +18,7 @@ export default {
     components: {
         LearningResource
     },
-    props: ['resources']
+    inject: ['resources']
 }
 </script>
 
