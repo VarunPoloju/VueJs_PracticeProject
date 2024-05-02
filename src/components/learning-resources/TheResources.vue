@@ -1,8 +1,6 @@
 <!-- Main entry point of resources area -->
 
 <!-- we have 2 buttons clicking on it switches b/w STORED Resources and Add REsources components-->
-
-
 <template>
   <base-card>
     <base-button
@@ -52,6 +50,7 @@ export default {
     return {
       resources: this.storedResources,
       addResource: this.addResource,
+      deleteResource: this.removeResource,
     };
   },
   computed: {
@@ -75,6 +74,13 @@ export default {
       };
       console.log(newResource);
       this.storedResources.unshift(newResource);
+    },
+
+    removeResource(resId) {
+      const resIndex = this.storedResources.findIndex(
+        (res) => res.id === resId
+      );
+      this.storedResources.splice(resIndex, 1);
     },
   },
 };
